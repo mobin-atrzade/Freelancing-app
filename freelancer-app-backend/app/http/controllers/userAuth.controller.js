@@ -7,10 +7,14 @@ const {
   verifyRefreshToken,
 } = require("../../../utils/functions");
 const createError = require("http-errors");
-const { UserModel } = require("../../models/user");
-const Kavenegar = require("kavenegar");
+const {
+  UserModel
+} = require("../../models/user");
+// const Kavenegar = require("kavenegar");
 const CODE_EXPIRES = 90 * 1000; //90 seconds in miliseconds
-const { StatusCodes: HttpStatus } = require("http-status-codes");
+const {
+  StatusCodes: HttpStatus
+} = require("http-status-codes");
 const {
   completeProfileSchema,
   updateProfileSchema,
@@ -24,7 +28,9 @@ class userAuthController extends Controller {
     this.phoneNumber = null;
   }
   async getOtp(req, res) {
-    let { phoneNumber } = req.body;
+    let {
+      phoneNumber
+    } = req.body;
 
     if (!phoneNumber)
       throw createError.BadRequest("شماره موبایل معتبر را وارد کنید");
@@ -41,12 +47,18 @@ class userAuthController extends Controller {
   }
   async checkOtp(req, res) {
     await checkOtpSchema.validateAsync(req.body);
-    const { otp: code, phoneNumber } = req.body;
+    const {
+      otp: code,
+      phoneNumber
+    } = req.body;
 
-    const user = await UserModel.findOne(
-      { phoneNumber },
-      { password: 0, refreshToken: 0, accessToken: 0 }
-    );
+    const user = await UserModel.findOne({
+      phoneNumber
+    }, {
+      password: 0,
+      refreshToken: 0,
+      accessToken: 0
+    });
 
     if (!user) throw createError.NotFound("کاربری با این مشخصات یافت نشد");
 
@@ -81,7 +93,9 @@ class userAuthController extends Controller {
     };
 
     const user = await this.checkUserExist(phoneNumber);
-    if (user) return await this.updateUser(phoneNumber, { otp });
+    if (user) return await this.updateUser(phoneNumber, {
+      otp
+    });
 
     return await UserModel.create({
       phoneNumber,
@@ -90,7 +104,9 @@ class userAuthController extends Controller {
     });
   }
   async checkUserExist(phoneNumber) {
-    const user = await UserModel.findOne({ phoneNumber });
+    const user = await UserModel.findOne({
+      phoneNumber
+    });
     return user;
   }
   async updateUser(phoneNumber, objectData = {}) {
@@ -98,64 +114,93 @@ class userAuthController extends Controller {
       if (["", " ", 0, null, undefined, "0", NaN].includes(objectData[key]))
         delete objectData[key];
     });
-    const updatedResult = await UserModel.updateOne(
-      { phoneNumber },
-      { $set: objectData }
-    );
+    const updatedResult = await UserModel.updateOne({
+      phoneNumber
+    }, {
+      $set: objectData
+    });
     return !!updatedResult.modifiedCount;
   }
   sendOTP(phoneNumber, res) {
-    const kaveNegarApi = Kavenegar.KavenegarApi({
-      apikey: `${process.env.KAVENEGAR_API_KEY}`,
-    });
-    kaveNegarApi.VerifyLookup(
-      {
-        receptor: phoneNumber,
-        token: this.code,
-        template: "registerVerify",
-      },
-      (response, status) => {
-        console.log(response);
-        console.log("kavenegar message status", status);
-        if (response && status === 200)
-          return res.status(HttpStatus.OK).send({
-            statusCode: HttpStatus.OK,
-            data: {
-              message: `کد تائید برای شماره موبایل ${toPersianDigits(
-                phoneNumber
-              )} ارسال گردید`,
-              expiresIn: CODE_EXPIRES,
-              phoneNumber,
-            },
-          });
 
-        return res.status(status).send({
-          statusCode: status,
-          message: "کد اعتبارسنجی ارسال نشد",
-        });
+    const response = {
+      statusCode: HttpStatus.OK,
+      data: {
+        message: `کد تائید برای شماره موبایل ${toPersianDigits(phoneNumber)} ارسال گردید`,
+        expiresIn: CODE_EXPIRES,
+        phoneNumber,
+        code: this.code // افزودن کد برای مشاهده در پاسخ
       }
-    );
+    };
+    console.log(response);
+    return res.status(HttpStatus.OK).send(response);
+
+    // const kaveNegarApi = Kavenegar.KavenegarApi({
+    //   apikey: `${process.env.KAVENEGAR_API_KEY}`,
+    // });
+    // kaveNegarApi.VerifyLookup(
+    //   {
+    //     receptor: phoneNumber,
+    //     token: this.code,
+    //     template: "registerVerify",
+    //   },
+    //   (response, status) => {
+    //     console.log(response);
+    //     console.log("kavenegar message status", status);
+    //     if (response && status === 200)
+    //       return res.status(HttpStatus.OK).send({
+    //         statusCode: HttpStatus.OK,
+    //         data: {
+    //           message: `کد تائید برای شماره موبایل ${toPersianDigits(
+    //             phoneNumber
+    //           )} ارسال گردید`,
+    //           expiresIn: CODE_EXPIRES,
+    //           phoneNumber,
+    //         },
+    //       });
+
+    //     return res.status(status).send({
+    //       statusCode: status,
+    //       message: "کد اعتبارسنجی ارسال نشد",
+    //     });
+    //   }
+    // );
   }
   async completeProfile(req, res) {
     await completeProfileSchema.validateAsync(req.body);
-    const { user } = req;
-    const { name, email, role } = req.body;
+    const {
+      user
+    } = req;
+    const {
+      name,
+      email,
+      role
+    } = req.body;
 
     if (!user.isVerifiedPhoneNumber)
       throw createError.Forbidden("شماره موبایل خود را تایید کنید.");
 
-    const duplicateUser = await UserModel.findOne({ email });
+    const duplicateUser = await UserModel.findOne({
+      email
+    });
     console.log(duplicateUser);
     if (duplicateUser)
       throw createError.BadRequest(
         "کاربری با این ایمیل قبلا ثبت نام کرده است."
       );
 
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: user._id },
-      { $set: { name, email, isActive: true, role } },
-      { new: true }
-    );
+    const updatedUser = await UserModel.findOneAndUpdate({
+      _id: user._id
+    }, {
+      $set: {
+        name,
+        email,
+        isActive: true,
+        role
+      }
+    }, {
+      new: true
+    });
     // await setAuthCookie(res, updatedUser);
     await setAccessToken(res, updatedUser);
     await setRefreshToken(res, updatedUser);
@@ -169,16 +214,27 @@ class userAuthController extends Controller {
     });
   }
   async updateProfile(req, res) {
-    const { _id: userId } = req.user;
+    const {
+      _id: userId
+    } = req.user;
     await updateProfileSchema.validateAsync(req.body);
-    const { name, email, biography, phoneNumber } = req.body;
+    const {
+      name,
+      email,
+      biography,
+      phoneNumber
+    } = req.body;
 
-    const updateResult = await UserModel.updateOne(
-      { _id: userId },
-      {
-        $set: { name, email, biography, phoneNumber },
-      }
-    );
+    const updateResult = await UserModel.updateOne({
+      _id: userId
+    }, {
+      $set: {
+        name,
+        email,
+        biography,
+        phoneNumber
+      },
+    });
     if (!updateResult.modifiedCount === 0)
       throw createError.BadRequest("اطلاعات ویرایش نشد");
     return res.status(HttpStatus.OK).json({
@@ -201,8 +257,12 @@ class userAuthController extends Controller {
     });
   }
   async getUserProfile(req, res) {
-    const { _id: userId } = req.user;
-    const user = await UserModel.findById(userId, { otp: 0 });
+    const {
+      _id: userId
+    } = req.user;
+    const user = await UserModel.findById(userId, {
+      otp: 0
+    });
 
     return res.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
