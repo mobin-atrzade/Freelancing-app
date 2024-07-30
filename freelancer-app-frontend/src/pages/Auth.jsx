@@ -1,6 +1,5 @@
 import AuthContainer from "../features/authentication/AuthContainer";
 
-
 function Auth() {
 
     return (
