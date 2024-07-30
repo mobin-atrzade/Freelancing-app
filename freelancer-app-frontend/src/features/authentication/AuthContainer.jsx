@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 function AuthContainer() {
     const [step, setStep] = useState(1);
     const [phoneNumber, setPhoneNumber] = useState("09114456502");
-    const { isPending: isSendingOtp, error, data, mutateAsync } = useMutation({
+    const { isPending: isSendingOtp, error, data: otpResponse, mutateAsync } = useMutation({
         mutationFn: getOtp,
     });
 
@@ -16,12 +16,12 @@ function AuthContainer() {
         e.preventDefault();
         try {
             const data = await mutateAsync({ phoneNumber });
-            console.log(data);
+            // console.log(data);
             toast.success(data.message);
             setStep(2);
         } catch (error) {
             toast.error(error?.response?.data?.message)
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -40,6 +40,7 @@ function AuthContainer() {
                     phoneNumber={phoneNumber}
                     onBack={() => setStep((s) => s - 1)}
                     onResendOtp={sendOtpHandler}
+                    otpResponse={otpResponse}
                 />;
             default:
                 return null;
