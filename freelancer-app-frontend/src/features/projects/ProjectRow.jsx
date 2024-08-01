@@ -6,11 +6,13 @@ import truncateText from "../../utils/truncateText";
 import { TbPencilMinus } from "react-icons/tb";
 import Modal from "../../ui/Modal";
 import { useState } from "react";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 
 function ProjectRow({ project, index }) {
 
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     return (
         <Table.Row>
@@ -42,15 +44,27 @@ function ProjectRow({ project, index }) {
                         <TbPencilMinus className="w-5 h-5 text-primary-900 " />
                     </button>
                     <Modal
-                        title="modal title"
+                        title={`ویرایش ${project.title}`}
                         open={isEditOpen}
                         onClose={() => { setIsEditOpen(false) }}
                     >
                         this is modal ...
                     </Modal>
-                    <button>
+                    <button onClick={() => setIsDeleteOpen(true)}>
                         <HiOutlineTrash className="w-5 h-5 text-error " />
                     </button>
+                    <Modal
+                        title={`حذف ${project.title}`}
+                        open={isDeleteOpen}
+                        onClose={() => { setIsDeleteOpen(false) }}
+                    >
+                        <ConfirmDelete
+                            resourceName={project.title}
+                            onClose={() => setIsDeleteOpen(false)}
+                            onConfirm={() => { }}
+                            disabled={false}
+                        />
+                    </Modal>
                 </div>
             </td>
         </Table.Row>
