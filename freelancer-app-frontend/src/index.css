@@ -36,8 +36,27 @@
   }
 }
 
-@layer components {
+.rti--container {
+  background-color: rgb(var(--color-secondary-100));
+  --rti-radius: 0.375rem;
+  --rti-s: 0.5rem;
+  --rti-tag: #edf2f7;
+  --rti-tag-remove: #e53e3e;
+  border: none;
+}
+.rti--container .rti--input {
+  background-color: rgb(var(--color-secondary-200));
+  color: rgb(var(--color-secondary-800));
+  padding: 0.3rem 1rem;
+  border-radius: 0.5rem;
+}
 
+.rti--tag {
+  background-color: rgb(var(--color-secondary-500));
+  color: rgb(var(--color-secondary-100));
+}
+
+@layer components {
   .textField__input {
     @apply w-full py-3 px-4 bg-gray-100 rounded-xl text-secondary-900 border border-gray-300  hover:border-primary-300 focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-300 ease-out focus:shadow-lg focus:shadow-primary-200;
   }

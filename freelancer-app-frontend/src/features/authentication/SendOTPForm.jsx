@@ -1,7 +1,7 @@
 import TextField from "../../ui/TextField";
 import Loading from "../../ui/Loading";
 
-function SendOTPForm({ isSendingOtp, phoneNumber, onChange, onSubmit }) {
+function SendOTPForm({ isSendingOtp, onSubmit, register }) {
 
 
     return <div>
@@ -10,8 +10,7 @@ function SendOTPForm({ isSendingOtp, phoneNumber, onChange, onSubmit }) {
                 label="شماره تماس"
                 type="number"
                 name="phonenumber"
-                value={phoneNumber}
-                onChange={onChange}
+                register={register}  
             />
             <div>
                 {isSendingOtp ? (
