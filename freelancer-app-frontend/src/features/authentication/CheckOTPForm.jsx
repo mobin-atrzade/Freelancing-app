@@ -27,7 +27,7 @@ function CheckOTPForm({ phoneNumber, onBack, onResendOtp, otpResponse }) {
             toast.success(message);
 
             if (!user.isActive) return navigate("/complete-profile");
-            if (user.status !== 2) {
+            if (Number(user.status) !== 2) {
                 navigate("/");
                 toast("پروفایل شما در انتظار تایید است", {
                     icon: '👏'

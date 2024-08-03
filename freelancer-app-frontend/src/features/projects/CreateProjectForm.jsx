@@ -5,16 +5,57 @@ import { TagsInput } from "react-tag-input-component";
 import { useState } from 'react';
 import DatePickerField from "../../ui/DatePickerField";
 import useCategories from "../../hooks/useCategories";
+import useCreateProject from "./useCreateProject";
+import Loading from './../../ui/Loading';
+import useEditProject from "./useEditProject";
 
 
-function CreateProjectForm() {
-    const { register, formState: { errors }, handleSubmit } = useForm();
-    const [tags, setTags] = useState([]);
-    const [date, setDate] = useState(new Date());
+function CreateProjectForm({ onClose, projectToEdit = {} }) {
+
+    const { _id: editId } = projectToEdit;
+    const isEditSession = Boolean(editId);
+
+    const { title, description, budget, deadline, category, tags: prevTags } = projectToEdit;
+
+    let editValues = {};
+    if (isEditSession) {
+        editValues = {
+            title,
+            description,
+            budget,
+            category: category._id
+        }
+    }
+
+    const { register, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues: editValues });
+    const [tags, setTags] = useState(prevTags || []);
+    const [date, setDate] = useState(new Date(deadline || ""));
     const { categories } = useCategories();
+    const { isCreating, createProject } = useCreateProject();
+    const { isEditing, editProject } = useEditProject();
 
     const onSubmit = (data) => {
-        console.log(data);
+        const newProject = {
+            ...data,
+            deadline: new Date(date).toISOString(),
+            tags
+        }
+
+        if (isEditSession) {
+            editProject({ id: editId, newProject }, {
+                onSuccess: () => {
+                    onClose();
+                    reset();
+                }
+            });
+        } else {
+            createProject(newProject, {
+                onSuccess: () => {
+                    onClose();
+                    reset();
+                }
+            })
+        }
     }
 
     return (
@@ -49,7 +90,7 @@ function CreateProjectForm() {
             />
             <TextField
                 label="بودجه"
-                name="price"
+                name="budget"
                 type="number"
                 register={register}
                 required
@@ -79,12 +120,16 @@ function CreateProjectForm() {
                 date={date}
                 setDate={setDate}
             />
-            <button
-                type="submit"
-                className="btn btn--primary w-full"
-            >
-                تایید
-            </button>
+            {isCreating ? (
+                <Loading />
+            ) : (
+                <button
+                    type="submit"
+                    className="btn btn--primary w-full"
+                >
+                    تایید
+                </button>
+            )}
         </form>
     )
 }

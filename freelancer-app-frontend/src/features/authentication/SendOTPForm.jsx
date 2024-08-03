@@ -7,10 +7,17 @@ function SendOTPForm({ isSendingOtp, onSubmit, register }) {
     return <div>
         <form className="space-y-10" onSubmit={onSubmit}>
             <TextField
-                label="شماره تماس"
+                label="شماره موبایل"
                 type="number"
-                name="phonenumber"
-                register={register}  
+                name="phoneNumber"
+                register={register}
+                validationSchema={{
+                    required: "شماره تماس ضروری است",
+                    minLength: {
+                        vallue: 11,
+                        message: "شماره تماس معتبر نمی باشد"
+                    }
+                }}
             />
             <div>
                 {isSendingOtp ? (

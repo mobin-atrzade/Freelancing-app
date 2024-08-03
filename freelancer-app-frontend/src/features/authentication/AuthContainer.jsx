@@ -21,7 +21,7 @@ function AuthContainer() {
             setStep(2);
         } catch (error) {
             toast.error(error?.response?.data?.message)
-            // console.log(error);
+            console.log(error);
         }
     }
 
@@ -36,7 +36,7 @@ function AuthContainer() {
                 />;
             case 2:
                 return <CheckOTPForm
-                    phoneNumber={getValues("phonenumber")}
+                    phoneNumber={getValues("phoneNumber")}
                     onBack={() => setStep((s) => s - 1)}
                     onResendOtp={sendOtpHandler}
                     otpResponse={otpResponse}

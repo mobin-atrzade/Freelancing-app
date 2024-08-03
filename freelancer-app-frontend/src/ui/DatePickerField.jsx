@@ -6,7 +6,7 @@ import persian from "react-date-object/calendars/persian";
 
 function DatePickerField({ label, date, setDate }) {
     return (
-        <div>
+        <div className="mb-4">
             <span className="mb-2 block text-secondary-700">{label}</span>
             <DatePicker
                 containerClassName="w-full"
