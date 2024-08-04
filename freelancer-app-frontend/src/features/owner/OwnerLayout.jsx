@@ -9,7 +9,7 @@ function OwnerLayout() {
             <Sidebar>
                     <CustomNavLink to="/owner/dashboard">
                         <HiHome />
-                        <span>خانه</span>
+                        <span>داشبورد</span>
                     </CustomNavLink>
                 
                 
