@@ -7,13 +7,13 @@ function OwnerLayout() {
     return (
         <AppLayout>
             <Sidebar>
-                    <CustomNavLink to="/owner/dashboard">
+                    <CustomNavLink to="dashboard">
                         <HiHome />
                         <span>داشبورد</span>
                     </CustomNavLink>
                 
                 
-                    <CustomNavLink to="/owner/projects">
+                    <CustomNavLink to="projects">
                         <HiCollection />
                         <span>پروژه ها</span>
                     </CustomNavLink>
