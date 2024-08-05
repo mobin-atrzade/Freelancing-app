@@ -1,5 +1,5 @@
 import { HiCollection, HiCurrencyDollar, HiOutlineViewGrid } from "react-icons/hi";
-import Stat from "./Stat";
+import Stat from './../../ui/Stat';
 
 function Stats({ projects }) {
 
