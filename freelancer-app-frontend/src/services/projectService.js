@@ -4,7 +4,6 @@ export function getOwnerProjectsApi() {
     return http.get("/project/owner-projects").then(({ data }) => data.data);
 }
 
-
 export function removeProjectApi(id) {
     return http.delete(`/project/${id}`).then(({ data }) => data.data);
 }
@@ -24,4 +23,8 @@ export function toggleProjectStatusApi({ id, data }) {
 
 export function getProjectApi(id) {
     return http.get(`/project/${id}`).then(({ data }) => data.data);
+}
+
+export function getProjectsApi() {
+    return http.get("/project/list").then(({ data }) => data.data);
 }
