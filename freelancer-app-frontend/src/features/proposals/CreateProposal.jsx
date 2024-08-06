@@ -1,12 +1,16 @@
 import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
 import Loading from "../../ui/Loading";
+import useCreateProposal from "./useCreateProposal";
 
 function CreateProposal({ onClose, projectId }) {
     const { handleSubmit, register, formState: { errors } } = useForm();
+    const { isCreating, createProposal } = useCreateProposal();
 
     const onSubmit = (data) => {
-        console.log(data);
+        createProposal({ ...data, projectId }, {
+            onSuccess: () => onClose()
+        })
     }
 
     return (
@@ -48,7 +52,7 @@ function CreateProposal({ onClose, projectId }) {
                     }}
                     errors={errors}
                 />
-                {0 ? (
+                {isCreating ? (
                     <Loading />
                 ) : (
                     <button
