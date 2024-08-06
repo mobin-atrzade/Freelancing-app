@@ -17,6 +17,8 @@ import Proposals from './pages/Proposals';
 import SubmitedProjects from './pages/SubmitedProjects';
 import FreelancerLayout from './features/freelancer/FreelancerLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
+import AdminLayout from './features/admin/AdminLayout';
+import AdminDashboard from './pages/AdminDashboard';
 
 
 
@@ -53,6 +55,18 @@ function App() {
               }>
               <Route index element={<Navigate to="dashboard" replace={true} />} />
               <Route path='dashBoard' element={<FreelancerDashboard />} />
+              <Route path='proposals' element={<Proposals />} />
+              <Route path='projects' element={<SubmitedProjects />} />
+            </Route>
+            <Route
+              path='/admin'
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }>
+              <Route index element={<Navigate to="dashboard" replace={true} />} />
+              <Route path='dashBoard' element={<AdminDashboard />} />
               <Route path='proposals' element={<Proposals />} />
               <Route path='projects' element={<SubmitedProjects />} />
             </Route>

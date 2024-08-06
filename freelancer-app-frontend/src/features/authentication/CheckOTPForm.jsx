@@ -35,7 +35,8 @@ function CheckOTPForm({ phoneNumber, onBack, onResendOtp, otpResponse }) {
                 return;
             }
             if (user.role === "OWNER") return navigate("/owner");
-            if (user.role === "FREELANCER") return navigate("/FREELANCER");
+            if (user.role === "FREELANCER") return navigate("/freelancer");
+            if (user.role === "ADMIN") return navigate("/admin");
         } catch (error) {
             toast.error(error?.response?.data?.message);
         }
