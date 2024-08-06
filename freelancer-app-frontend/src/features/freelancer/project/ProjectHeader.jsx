@@ -31,7 +31,6 @@ const statusOptions = [
 function ProjectHeader() {
     const { transformedCategories } = useCategories();
 
-
     return (
         <div className="flex items-center justify-between text-secondary-700 mb-8 ">
             <h1 className="text-lg font-bold">لیست پروژه ها</h1>
@@ -52,5 +51,4 @@ function ProjectHeader() {
         </div>
     )
 }
-
 export default ProjectHeader;

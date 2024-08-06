@@ -4,6 +4,8 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { Toaster } from "react-hot-toast";
 import OwnerDashboard from './pages/OwnerDashboard';
 import Projects from './pages/Projects';
@@ -16,6 +18,7 @@ import SubmitedProjects from './pages/SubmitedProjects';
 import FreelancerLayout from './features/freelancer/FreelancerLayout';
 
 
+
 function App() {
   const queryClient = new QueryClient();
 
@@ -24,6 +27,7 @@ function App() {
     <>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
           <Toaster />
           <Routes>
             <Route path='/auth' element={<Auth />} />
