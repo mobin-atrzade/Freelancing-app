@@ -5,7 +5,6 @@ import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 import { Toaster } from "react-hot-toast";
 import OwnerDashboard from './pages/OwnerDashboard';
 import Projects from './pages/Projects';
@@ -69,6 +68,8 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace={true} />} />
               <Route path='dashBoard' element={<AdminDashboard />} />
               <Route path='users' element={<Users />} />
+              <Route path='proposals' element={<Proposals />} />
+              <Route path='projects' element={<SubmitedProjects />} />
             </Route>
             <Route path='/' element={<Home />} />
             <Route path='*' element={<NotFound />} />
