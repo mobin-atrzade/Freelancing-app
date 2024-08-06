@@ -19,6 +19,7 @@ import FreelancerLayout from './features/freelancer/FreelancerLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 import AdminLayout from './features/admin/AdminLayout';
 import AdminDashboard from './pages/AdminDashboard';
+import Users from './pages/Users';
 
 
 
@@ -67,8 +68,7 @@ function App() {
               }>
               <Route index element={<Navigate to="dashboard" replace={true} />} />
               <Route path='dashBoard' element={<AdminDashboard />} />
-              <Route path='proposals' element={<Proposals />} />
-              <Route path='projects' element={<SubmitedProjects />} />
+              <Route path='users' element={<Users />} />
             </Route>
             <Route path='/' element={<Home />} />
             <Route path='*' element={<NotFound />} />
