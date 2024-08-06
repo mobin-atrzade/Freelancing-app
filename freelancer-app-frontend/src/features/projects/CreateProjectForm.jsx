@@ -120,7 +120,7 @@ function CreateProjectForm({ onClose, projectToEdit = {} }) {
                 date={date}
                 setDate={setDate}
             />
-            {isCreating ? (
+            {isCreating || isEditing ? (
                 <Loading />
             ) : (
                 <button
